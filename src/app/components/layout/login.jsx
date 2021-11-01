@@ -26,6 +26,16 @@ const Login = () => {
       isRequared: {
         message: "Пароль  обязателен для заполнения",
       },
+      isCapitalSymbol: {
+        message: "Введите хотя бы одну заглавную букву",
+      },
+      isContainDigit: {
+        message: "Пароль должен содержать хотя бы одно число",
+      },
+      min: {
+        message: "Пароль должен состоять минимум из 8 символов",
+        value: 8,
+      },
     },
   };
   useEffect(() => {
