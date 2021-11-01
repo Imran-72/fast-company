@@ -9,6 +9,11 @@ const Login = () => {
       [target.name]: [target.value],
     }));
   };
+  setData((prevState) => ({
+    ...prevState,
+    [target.name]: [target.value],
+  }));
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
