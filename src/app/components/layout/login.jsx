@@ -3,7 +3,14 @@ import TextField from "../TextField";
 
 const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
-  const [, setErrors] = useState();
+  const [errors, setErrors] = useState({});
+
+  const handleChange = ({ target }) => {
+    setData((prevState) => ({
+      ...prevState,
+      [target.name]: target.value,
+    }));
+  };
 
   useEffect(() => {
     validate();
@@ -11,7 +18,7 @@ const Login = () => {
   const validate = () => {
     const errors = {};
     for (const fieldName in data) {
-      if (data[fieldName] === "") {
+      if (data[fieldName].trim() === "") {
         errors[fieldName] = `${fieldName} обязятельно для заполнения`;
       }
     }
@@ -26,12 +33,6 @@ const Login = () => {
     console.log(data);
   };
 
-  const handleChange = ({ target }) => {
-    setData((prevState) => ({
-      ...prevState,
-      [target.name]: [target.value],
-    }));
-  };
   return (
     <form onSubmit={handleSubmit}>
       <TextField
@@ -39,6 +40,7 @@ const Login = () => {
         name="email"
         value={data.email}
         onChange={handleChange}
+        error={errors.email}
       />
       <TextField
         label="Пароль"
@@ -46,6 +48,7 @@ const Login = () => {
         name="password"
         value={data.password}
         onChange={handleChange}
+        error={errors.password}
       />
       <button type="submit">Submit</button>
     </form>
