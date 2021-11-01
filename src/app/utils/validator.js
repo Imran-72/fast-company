@@ -5,7 +5,11 @@ export function validator(data, config) {
       case "isRequared":
         if (data.trim() === "") return config.message;
         break;
-
+      case "isEmail": {
+        const emailRegExp = /^\s+@\s+\.\s+$/g;
+        if (!emailRegExp.test(data)) return config.message;
+        break;
+      }
       default:
         break;
     }
@@ -17,7 +21,7 @@ export function validator(data, config) {
         data[fieldName],
         config[fieldName][validateMethod]
       );
-      if (error) {
+      if (error && !errors[fieldName]) {
         errors[fieldName] = error;
       }
     }
