@@ -11,6 +11,7 @@ const UsersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [professions, setProfessions] = useState();
   const [selectedProf, setSelectedProf] = useState();
+  const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
   const pageSize = 8;
   useEffect(() => {
@@ -19,9 +20,10 @@ const UsersList = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedProf]);
+  }, [selectedProf, searchQuery]);
 
   const [users, setUsers] = useState();
+
   useEffect(() => {
     api.users.fetchAll().then((data) => setUsers(data));
   }, []);
@@ -46,6 +48,7 @@ const UsersList = () => {
   };
 
   const handleProfessionSelect = (item) => {
+    setSearchQuery("");
     setSelectedProf(item);
   };
 
@@ -56,8 +59,18 @@ const UsersList = () => {
   const handleSort = (item) => {
     setSortBy(item);
   };
+
+  const handleSearchQuery = ({ target }) => {
+    setSelectedProf(undefined);
+    setSearchQuery(target.value);
+  };
   if (users) {
-    const filteredUsers = selectedProf
+    const filteredUsers = searchQuery
+      ? users.filter(
+          (user) =>
+            user.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1
+        )
+      : selectedProf
       ? users.filter(
           (user) =>
             JSON.stringify(user.profession) === JSON.stringify(selectedProf)
@@ -83,6 +96,14 @@ const UsersList = () => {
         )}
         <div className="p-3">
           <SearchStatus length={count} />
+          <input
+            type="text"
+            name="searchQuery"
+            placeholder="Search..."
+            onChange={handleSearchQuery}
+            value={searchQuery}
+          />
+
           {count > 0 && (
             <UserTable
               users={usersCrop}
