@@ -1,9 +1,9 @@
 import React from "react";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
-import BookMark from "./bookmark";
-import QualitiesList from "./QualitiesList";
-import Table from "./Table";
+import BookMark from "../common/bookmark";
+import Qualities from "./qualities";
+import Table from "../common/table";
 
 const UserTable = ({
   users,
@@ -16,11 +16,20 @@ const UserTable = ({
     name: {
       path: "name",
       name: "Имя",
-      component: (user) => <Link to={`/users/${user._id}`}>{user.name}</Link>,
+      component: (user) => (
+        <Link
+          to={`/users/${user._id}`}
+          style={{
+            textDecoration: "none",
+          }}
+        >
+          {user.name}
+        </Link>
+      ),
     },
     qualities: {
       name: "Качества",
-      component: (user) => <QualitiesList qualities={user.qualities} />,
+      component: (user) => <Qualities qualities={user.qualities} />,
     },
     professions: { path: "profession.name", name: "Провфессия" },
     completedMeetings: { path: "completedMeetings", name: " Встретился, раз" },
